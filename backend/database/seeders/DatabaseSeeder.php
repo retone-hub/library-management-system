@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Author;
 use App\Models\Category;
+use App\Models\Author;
 use App\Models\Publisher;
+use App\Models\Book;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,9 +20,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            AuthorSeeder::class,
             CategorySeeder::class,
+            AuthorSeeder::class,
             PublisherSeeder::class,
+            BookSeeder::class,
         ]);
     }
 }
