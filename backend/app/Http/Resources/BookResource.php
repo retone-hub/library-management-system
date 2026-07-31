@@ -27,12 +27,12 @@ class BookResource extends JsonResource
                 'name' => $this->category->name,
             ],
             'author' => [
-                'id' => $this->category->id,
-                'name' => $this->category->name,
+                'id' => $this->author->id,
+                'name' => $this->author->name,
             ],
             'publisher' => [
-                'id' => $this->category->id,
-                'name' => $this->category->name,
+                'id' => $this->publisher->id,
+                'name' => $this->publisher->name,
             ],
         ];
     }

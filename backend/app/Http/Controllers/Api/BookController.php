@@ -7,7 +7,6 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Resources\BookResource;
 use App\Http\Requests\BookRequest;
-use Iluminate\Database\Eloquent\Relations\BelongsTo;
 
 class BookController extends Controller
 {
@@ -17,7 +16,7 @@ class BookController extends Controller
             'category',
             'author',
             'publisher',
-        ])->get(); // get bisa diganti paginate(10) or simplePaginate(10) cocok untuk 10 perhalaman jadi tidak di ambil semua
+        ])->paginate(10); // get bisa diganti paginate(10) or simplePaginate(10) cocok untuk 10 perhalaman jadi tidak di ambil semua
 
         return BookResource::collection($books);
     }
@@ -63,7 +62,7 @@ class BookController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function destroy(Book $book)
     {
         $book->deleted();
 
