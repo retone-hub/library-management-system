@@ -10,8 +10,10 @@ use App\Http\Requests\BookRequest;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search'); //bisa diganti query tetapi hanya mengambil tipe data string, kalau input fleksibel
+
         $books = Book::with([
             'category',
             'author',
