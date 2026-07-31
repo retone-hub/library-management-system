@@ -25,9 +25,8 @@ class BookRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:100',
-            'isbn' => 'required|string|size:13|unique:books,isbn',
             'description' => 'nullable|string',
-            'published_year' => 'integer',
+            'published_year' => 'required|integer',
             'stock' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'author_id' => 'required|exists:authors,id',

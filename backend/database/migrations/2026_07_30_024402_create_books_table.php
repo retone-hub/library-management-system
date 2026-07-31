@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('category_id')->constrained()->resrictOnDelete();
-            $table->foreignId('author_id')->constrained()->resrictOnDelete();
-            $table->foreignId('publisher_id')->constrained()->resrictOnDelete();
+            $table->foreignId('category_id')->constrained()->restrictOnDelete(); //constrained itu jembatan
+            $table->foreignId('author_id')->constrained()->restrictOnDelete();
+            $table->foreignId('publisher_id')->constrained()->restrictOnDelete();
 
             $table->string('title', 100);
             $table->string('isbn', 100)->unique();
