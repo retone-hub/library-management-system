@@ -16,7 +16,7 @@ class BookController extends Controller
             'category',
             'author',
             'publisher',
-        ])->paginate(10); // get bisa diganti paginate(10) or simplePaginate(10) cocok untuk 10 perhalaman jadi tidak di ambil semua
+        ])->simplePaginate(10); // get bisa diganti paginate(10) untuk halamar 1,2,3,4,5,.. 100 or simplePaginate(10) cocok untuk previous dan next
 
         return BookResource::collection($books);
     }
