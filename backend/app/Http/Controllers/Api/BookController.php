@@ -13,9 +13,9 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search'); //bisa diganti query tetapi hanya mengambil tipe data string, kalau input fleksibel
-        $category = $request->input('category');
-        $author = $request->input('author');
-        $publisher = $request->input('publisher');
+        $category = $request->input('category_id');
+        $author = $request->input('author_id');
+        $publisher = $request->input('publisher_id');
 
         $sort = $request->input('sort', 'published_year');
         $direction = $request->input('direction', 'asc');
