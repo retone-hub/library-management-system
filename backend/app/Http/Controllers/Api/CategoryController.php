@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Http\Resources\CategoryResource;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use Iluminate\Database\Eloquent\Relations\HasMany;
 
 class CategoryController extends Controller
 {
@@ -85,13 +84,6 @@ class CategoryController extends Controller
             'message' => 'Category permanently deleted successfully.'
         ]);
     }
-
-    public function books(): HasMany
-    {
-        return $this->hasMany(Book::class);
-    }
-
-
 }
 
 

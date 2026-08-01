@@ -31,7 +31,7 @@ class BookRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'author_id' => 'required|exists:authors,id',
             'publisher_id' => 'required|exists:publishers,id',
-
+            
             'isbn' => [
                 'required',
                 'string',
