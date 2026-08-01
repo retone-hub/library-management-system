@@ -16,6 +16,26 @@ class BookController extends Controller
         $category = $request->input('category');
         $author = $request->input('author');
         $publisher = $request->input('publisher');
+
+        $sort = $request->input('sort', 'published_year');
+        $direction = $request->input('direction', 'asc');
+
+        //Validation
+        $allowedSorts = [
+            'title',
+            'published_year',
+            'stock',
+        ];
+
+        if (! in_array($sort, $allowedSorts)) {
+            $sort = 'published_year';
+        }
+
+        if (! in_array($direction, ['asc', 'desc'])) {
+            $direction = 'asc';
+        }
+
+        //Query Builder
         $query = Book::query();
         // $query->with([
         //     'category',
@@ -25,6 +45,7 @@ class BookController extends Controller
         // $query->when($search, function ($query) use ($search) { // use itu membawa variabel dari luar function ke dalam closure (anonymous function)
         //     $query->where('title', 'LIKE', "%{$search}%");
         // });
+        
 
         $query->with([
             'category',
@@ -42,7 +63,8 @@ class BookController extends Controller
         })
         ->when($publisher, function ($query) use ($publisher) {
             $query->where('publisher_id', $publisher);
-        });
+        })
+        ->orderBy($sort, $direction);
 
         $books = $query->paginate(10);
 
