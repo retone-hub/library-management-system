@@ -13,14 +13,35 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search'); //bisa diganti query tetapi hanya mengambil tipe data string, kalau input fleksibel
+        $category = $request->input('category');
+        $author = $request->input('author');
+        $publisher = $request->input('publisher');
         $query = Book::query();
+        // $query->with([
+        //     'category',
+        //     'author',
+        //     'publisher',
+        // ]);
+        // $query->when($search, function ($query) use ($search) { // use itu membawa variabel dari luar function ke dalam closure (anonymous function)
+        //     $query->where('title', 'LIKE', "%{$search}%");
+        // });
+
         $query->with([
             'category',
             'author',
             'publisher',
-        ]);
-        $query->when($search, function ($query) use ($search) { // use itu membawa variabel dari luar function ke dalam closure (anonymous function)
-            $query->where('title', 'LIKE', "%{$search}%");
+        ])
+        ->when($search, function ($query) use ($search) {
+            $query->where('title', 'LIKE', "%$search%");
+        })
+        ->when($category, function ($query) use ($category) {
+            $query->where('category_id', $category);
+        })
+        ->when($author, function ($query) use ($author) {
+            $query->where('author_id', $author);
+        })
+        ->when($publisher, function ($query) use ($publisher) {
+            $query->where('publisher_id', $publisher);
         });
 
         $books = $query->paginate(10);
