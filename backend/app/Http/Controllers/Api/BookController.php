@@ -28,7 +28,7 @@ class BookController extends Controller
         ];
 
         if (! in_array($sort, $allowedSorts)) {
-            $sort = 'published_year';
+            $sort = 'published_year';dsaasddassa
         }
 
         if (! in_array($direction, ['asc', 'desc'])) {
@@ -45,7 +45,7 @@ class BookController extends Controller
         // $query->when($search, function ($query) use ($search) { // use itu membawa variabel dari luar function ke dalam closure (anonymous function)
         //     $query->where('title', 'LIKE', "%{$search}%");
         // });
-        
+
 
         $query->with([
             'category',
