@@ -28,7 +28,7 @@ class BookController extends Controller
         ];
 
         if (! in_array($sort, $allowedSorts)) {
-            $sort = 'published_year';dsaasddassa
+            $sort = 'published_year';
         }
 
         if (! in_array($direction, ['asc', 'desc'])) {
