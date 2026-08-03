@@ -104,7 +104,7 @@ class BorrowingController extends Controller
                 'user_id' => $request->user_id,
                 'book_id' => $request->book_id,
                 'borrowed_at' => now(),
-                'due_at' => now()->addDays(7), //aturan 7 hari
+                'due_date' => now()->addDays(7), //aturan 7 hari
             ]);
         });
 

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->restrictOnDelete(); //user tidak bisa dihapus meskipun sedang meminjam
             $table->foreignId('book_id')->constrained()->restrictOnDelete();
 
-            $table->timestamps('borrowed_at');
-            $table->timestamps('due_date');
-            $table->timestamps('returned_at')->nullable();
+            $table->timestamp('borrowed_at');
+            $table->timestamp('due_date');
+            $table->timestamp('returned_at')->nullable();
 
             $table->timestamps();
         });
