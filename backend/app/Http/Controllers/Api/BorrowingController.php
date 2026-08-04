@@ -93,7 +93,7 @@ class BorrowingController extends Controller
             ], 400);
         }
 
-        // Transaction
+        // Transaction =  fungsinya kalah salah satunya gagal maka semua prosese gagal, ini dianggap sebagai satu kesatuan
         $borrowing = DB::transaction(function () use ($book, $request) {
 
             //Kurangi stok buku
