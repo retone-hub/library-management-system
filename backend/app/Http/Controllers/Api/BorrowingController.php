@@ -13,6 +13,7 @@ class BorrowingController extends Controller
 {
     public function index(Request $request)
     {
+        //Ini untuk filter data berdasarkan parameter URL, contoh : GET /api/borrowings?user_id=5
         $search = $request->input('search');
         $user = $request->input('user_id');
         $book = $request->input('book_id');
@@ -26,11 +27,11 @@ class BorrowingController extends Controller
             'due_date',
         ];
 
-        if (!in_array($sort, $allowedSorts)) {
+        if (! in_array($sort, $allowedSorts)) {
             $sort = 'borrowed_at';
         }
 
-        if (!in_array($direction, ['asc', 'desc'])) {
+        if (! in_array($direction, ['asc', 'desc'])) {
             $direction = 'desc';
         }
 
@@ -71,6 +72,8 @@ class BorrowingController extends Controller
 
     public function store(BorrowRequest $request)
     {
+
+        $user = $request->user();
         // Cari buku berdasarkan ID
         $book = Book::findOrFail($request->book_id);
 
@@ -80,9 +83,9 @@ class BorrowingController extends Controller
                 'message' => 'Book is out of stock.',
             ], 400);
         }
-
+        
         // Cek apakah user masih meminjam buku yang sama
-        $alreadyBorrowed = Borrowing::where('user_id', $request->user_id)
+        $alreadyBorrowed = Borrowing::where('user_id', $user->id)
         ->where('book_id', $request->book_id)
         ->whereNull('returned_at')
         ->exists();
@@ -94,14 +97,14 @@ class BorrowingController extends Controller
         }
 
         // Transaction =  fungsinya kalah salah satunya gagal maka semua prosese gagal, ini dianggap sebagai satu kesatuan
-        $borrowing = DB::transaction(function () use ($book, $request) {
+        $borrowing = DB::transaction(function () use ($book, $request, $user) {
 
             //Kurangi stok buku
             $book->decrement('stock');
 
             //Simpan data peminjam
             return Borrowing::create([
-                'user_id' => $request->user_id,
+                'user_id' => $user->id,
                 'book_id' => $request->book_id,
                 'borrowed_at' => now(),
                 'due_date' => now()->addDays(7), //aturan 7 hari
@@ -120,6 +123,10 @@ class BorrowingController extends Controller
     public function show(Borrowing $borrowing)
     {
        
+        $borrowing->load([
+            'user',
+            'book',
+        ]);
 
         return new BorrowingResource($borrowing);
     }
@@ -138,7 +145,7 @@ class BorrowingController extends Controller
             
             //Tandai buku yang sudah dikembalikan
             $borrowing->update([
-                'returned_at' => now,
+                'returned_at' => now(),
             ]);
 
             // Tambah stok buku

@@ -23,7 +23,6 @@ class BorrowRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'book_id' => 'required|exists:books,id',
         ];
     }

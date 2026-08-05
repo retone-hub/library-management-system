@@ -3,8 +3,20 @@
 use App\Http\Controllers\Api\BorrowingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\BookController;
+
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/borrowings', [BorrowingController::class, 'index']);
+
+    Route::post('/borrowings', [BorrowingController::class, 'store']);
+
+    Route::patch('/borrowings/{borrowing}/return', [BorrowingController::class, 'returnBook']);
+});
 
 Route::patch('borrowings/{borrowing}/return', [BorrowingController::class, 'returnBook']);
 Route::delete('categories/{category}/force', [CategoryController::class, 'forceDelete'])->withTrashed(); // kenapa withTrashed karena data yang dihapus biasanya sudah berada di trash.
