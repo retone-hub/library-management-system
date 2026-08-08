@@ -26,6 +26,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('borrowings', BorrowingController::class);
 });
 
+// user dan admin boleh melihat buku
+Route::get('/books', [BookController::class,'index'])->middleware(['auth:sanctum']);
+// hanya admin yang boleh membuat buku
+Route::post('/books', [BookController::class, 'store'])->middleware(['auth:sanctum', 'role:admin']);
+// hanya admin yang boleh mengubah buku
+Route::patch('/books/{book}', [BookController::class, 'update'])->middleware(['auth:sanctum', 'role:admin']);
+// hanya admin yang boleh menghapus buku
+Route::delete('/books/{book}', [BookController::class, 'destroy'])->middleware(['auth:sanctum', 'role:admin']);
+
 Route::patch('borrowings/{borrowing}/return', [BorrowingController::class, 'returnBook']);
 Route::delete('categories/{category}/force', [CategoryController::class, 'forceDelete'])->withTrashed(); // kenapa withTrashed karena data yang dihapus biasanya sudah berada di trash.
 Route::put('categories/{category}/restore', [CategoryController::class, 'restore'])->withTrashed();
