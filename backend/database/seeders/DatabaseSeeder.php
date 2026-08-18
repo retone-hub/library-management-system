@@ -3,11 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Category;
-use App\Models\Author;
-use App\Models\Publisher;
-use App\Models\Book;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,5 +22,24 @@ class DatabaseSeeder extends Seeder
             PublisherSeeder::class,
             BookSeeder::class,
         ]);
+
+        User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+            'name' => 'Admin',
+            'password' => Hash::make('password123'),
+            'role' => 'admin',
+            ]
+        );
+        
+
+        User::updateOrCreate(
+            ['email' => 'user@gmail.com'],
+            [
+                'name' => 'User',
+                'password' => Hash::make('password123'),
+                'role' => 'user',
+            ]
+        );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use App\Models\Borrowing;
 use App\Http\Requests\BorrowRequest;
 use Illuminate\Http\Request;
