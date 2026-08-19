@@ -16,11 +16,12 @@ class BorrowingController extends Controller
     {
         //Ini untuk filter data berdasarkan parameter URL, contoh : GET /api/borrowings?user_id=5
         $search = $request->input('search');
-        $user = $request->input('user_id');
         $book = $request->input('book_id');
         $status = $request->input('status');
         $sort = $request->input('sort', 'borrowed_at');
         $direction = $request->input('direction', 'desc');
+
+        $user = $request->user();
 
         //Validation
         $allowedSorts = [
@@ -63,10 +64,15 @@ class BorrowingController extends Controller
             if ($status == 'returned') {
                 $query->whereNotNull('returned_at');
             }
-        })
-        ->orderBy($sort, $direction); //sorting
+        });
 
-        $borrowings = $query->paginate(10);
+        // User hanya boleh melihat borrowing miliknya
+        if (! $user->isAdmin()){
+            $query->where('user_id', $user->id);
+        }
+        
+
+        $borrowings = $query->orderBy($sort, $direction)->paginate(10); // sorting dalam paginate
 
         return BorrowingResource::collection($borrowings);
     }
@@ -121,9 +127,15 @@ class BorrowingController extends Controller
         return new BorrowingResource($borrowing);
     }
 
-    public function show(Borrowing $borrowing)
+    public function show(Request $request, Borrowing $borrowing)
     {
-       
+       if (! $request->user()->isAdmin() && // bukan admin dan bukan pemilik maka 403 forbidden
+            $borrowing->user_id !== $request->user()->id) {
+                return response()->json([
+                    'message' => 'Forbidden',
+                ], 403);
+            }
+
         $borrowing->load([
             'user',
             'book',
